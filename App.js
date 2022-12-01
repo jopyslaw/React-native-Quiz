@@ -1,40 +1,45 @@
 import React from 'react';
 import {
   StyleSheet,
-  View
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
+import ResultScreen from './screens/ResultScreen';
+import TestScreen from './screens/TestScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
 
-const MainScreen = () => {
+
+const MainScreenFunction = () => {
   return (
     <HomeScreen />
   )
 }
 
-const TestScreen = () => {
+const TestScreenFunction = () => {
   return (
     <TestScreen />
   )
 }
 
-const ResultScreen = () => {
+const ResultScreenFunction = () => {
   return (
     <ResultScreen />
   )
 }
 
-const App = () => {
-  const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
+const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen name='Home' component={MainScreen} />
-        <Stack.Screen name='Test' component={TestScreen} />
-        <Stack.Screen name='Result' component={ResultScreen} />
-      </Stack.Navigator>
+      <Drawer.Navigator initialRouteName='Home'>
+        <Drawer.Screen name='Home' component={MainScreenFunction} />
+        <Drawer.Screen name='Test' component={TestScreenFunction} />
+        <Drawer.Screen name='Result' component={ResultScreenFunction} />
+      </Drawer.Navigator>
     </NavigationContainer>
   )
 };
