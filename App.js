@@ -9,7 +9,8 @@ import ResultScreen from './screens/ResultScreen';
 import TestScreen from './screens/TestScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
-
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Invalid prop `textStyle` of type `array` supplied to `Cell`, expected `object`.']);
 
 const MainScreenFunction = () => {
   return (

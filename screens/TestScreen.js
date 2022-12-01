@@ -22,13 +22,13 @@ const TestScreen = () => {
     <View style={styles.container}>
         <View style={styles.flexBox}>
           <View style={styles.oneRow}>
-            <Text>Question</Text>
+            <Text>Question 1 of 10</Text>
           </View>
           <View style={styles.oneRow}>
-            <Text>Time</Text>
+            <Text>Time: 30 s</Text>
           </View>
         </View>
-        <View>
+        <View style={{padding: 10}}>
           <Question answers={answers} question={question}/>
         </View>
     </View>
