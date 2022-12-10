@@ -1,98 +1,67 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
-import type {Node} from 'react';
+import React, { useEffect } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
 } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from './screens/HomeScreen';
+import ResultScreen from './screens/ResultScreen';
+import TestScreen from './screens/TestScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
+import { LogBox } from 'react-native';
+import TestEndScreen from './screens/TestEndScreen';
+import StatuteScreen from './screens/StatuteScreen';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+LogBox.ignoreLogs(['Invalid prop `textStyle` of type `array` supplied to `Cell`, expected `object`.']);
 
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+const MainScreenFunction = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+    <HomeScreen />
+  )
+}
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const TestScreenFunction = () => {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    <TestScreen />
+  )
+}
+
+const ResultScreenFunction = () => {
+  return (
+    <ResultScreen />
+  )
+}
+
+const StatuteScreenFunction = () => {
+  return (
+    <StatuteScreen />
+  )
+}
+
+const EndTestScreenFunction = () => {
+  return (
+    <TestEndScreen />
+  )
+}
+
+const Drawer = createDrawerNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName='Home'>{/**/}
+        <Drawer.Screen name='Home' component={MainScreenFunction} />
+        <Drawer.Screen name='HistoryTest' component={TestScreenFunction} initialParams={{type: 'History'}}/>
+        <Drawer.Screen name='ITTest' component={TestScreenFunction} initialParams={{type: 'IT'}}/>
+        <Drawer.Screen name='FoodTest' component={TestScreenFunction} initialParams={{type: 'Food'}}/>
+        <Drawer.Screen name='MarvelTest' component={TestScreenFunction} initialParams={{type: 'Marvel'}}/>
+        <Drawer.Screen name='DCTest' component={TestScreenFunction} initialParams={{type: 'DC'}}/>
+        <Drawer.Screen name='Result' component={ResultScreenFunction} />
+        <Drawer.Screen name='Statute' component={StatuteScreenFunction} options={{drawerItemStyle: {display: 'none'}}}/>
+        <Drawer.Screen name='testEndScreen' component={EndTestScreenFunction} options={{drawerItemStyle: {display: 'none'}}} initialParams={{points: '0'}}/>
+      </Drawer.Navigator>
+    </NavigationContainer>
+  )
 };
 
 const styles = StyleSheet.create({
