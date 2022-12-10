@@ -1,35 +1,86 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     StyleSheet,
     Text
 } from 'react-native'
 import Question from '../components/Question'
+import { itQuestions, foodQuestions, historyQuestions, marvelQuestions, dcQuestions } from '../assets/questions'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const TestScreen = () => {
-  const answers = [
-    {
-      answerA: 'testA',
-      answerB: 'testB',
-      answerC: 'testC',
-      answerD: 'testD'
-    }
-  ];
+  const [questionNumber, setQuestionNumber] = useState(0);
+  const [points, setPoints] = useState(0);
+  const route = useRoute()
+  const navigation = useNavigation();
 
-  const question = 'Testowe pytanko xdddd'
+  const [timerCount, setTimer] = useState(30)
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      setTimer(lastTimerCount => {
+        //lastTimerCount <= 1 && clearInterval(interval)
+        if((lastTimerCount-1) === 0) {
+          nextQuestion();
+        }
+        console.log('test');
+        return lastTimerCount - 1
+    })
+    }, 1000) //each count lasts for a second
+    //cleanup the interval on complete
+
+    if(questionNumber + 1 <= questions.length)
+      return () => clearInterval(interval)
+  }, []);
+
+
+  const checkIfTrue = (odp) => {
+    console.log(odp)
+    if(odp === true) {
+      setPoints(prev => prev += 1);
+    }
+    nextQuestion();
+  }
+
+  const nextQuestion = () => {
+    if((questionNumber+1) < questions.length) {
+      setQuestionNumber(prev => prev + 1);
+      setTimer(30);
+    } else {
+      navigation.navigate('testEndScreen', {
+        points: points
+      })
+    }
+  }
+
+  const {type} = route.params;
+  let questions = [];
+
+  if(type === 'IT') {
+    questions = itQuestions;
+  } else if(type === 'Food') {
+    questions = foodQuestions;
+  } else if(type === 'History') {
+    questions = historyQuestions;
+  } else if (type === 'Marvel') {
+    questions = marvelQuestions;
+  } else if (type === 'DC') {
+    questions = dcQuestions;
+  }
+
 
   return (
     <View style={styles.container}>
         <View style={styles.flexBox}>
           <View style={styles.oneRow}>
-            <Text>Question 1 of 10</Text>
+            <Text>Question {questionNumber+1} of {questions.length}</Text>
           </View>
           <View style={styles.oneRow}>
-            <Text>Time: 30 s</Text>
+            <Text>Time: {timerCount} s</Text>
           </View>
         </View>
         <View style={{padding: 10}}>
-          <Question answers={answers} question={question}/>
+          <Question answers={questions[questionNumber].answers} question={questions[questionNumber].question} onPress={() => checkIfTrue}/>
         </View>
     </View>
   )

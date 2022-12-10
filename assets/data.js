@@ -1,47 +1,28 @@
 export default data = [
     {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
+        title: 'IT',
+        tag: '#IT#COMPUTERS',
+        description: 'Sprawdź swoją wiedzę na temat informatyki, poznaj najnowsze osiągnięcia technologiczne',
+
     },
     {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
+        title: 'Food',
+        tag: '#FOOD#TASTY',
+        description: 'Sprawdź swoją wiedzę na tematy związane z jedzeniem, zobacz jak dobrym kucharzem zostaniesz'
     },
     {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
+        title: 'History',
+        tag: '#HISTORY#WAR',
+        description: 'Sprawdź swoją wiedzę na tematy związane z historią'
     },
     {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
+        title: 'Marvel',
+        tag: '#MARVEL#IRONMAN',
+        description: 'Sprawdź swoją wiedzę na tematy związane z uniwersum Marvela'
     },
     {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
-    },
-    {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
-    },
-    {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
-    },
-    {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
-    },
-    {
-        title: 'Test',
-        tag: 'xDDDDD',
-        description: 'dhjsgdsafjkhlgdsajkuhguagdhljsfasgdhljgfwhedsahjdsagdfsagiouyqwerfgiuyf'
+        title: 'DC',
+        tag: '#DC#BATMAN',
+        description: 'Sprawdź swoją wiedzę na tematy związane z uniwersum DC'
     },
 ]

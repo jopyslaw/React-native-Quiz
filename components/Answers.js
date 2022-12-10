@@ -9,10 +9,10 @@ const Answers = (props) => {
     
     return (
         <View style={styles.answerContainer}>
-            <Button newStyles={styles.answerButton} title={props.answers[0].answerA} />
-            <Button newStyles={styles.answerButton} title={props.answers[0].answerB} />
-            <Button newStyles={styles.answerButton} title={props.answers[0].answerC} />
-            <Button newStyles={styles.answerButton} title={props.answers[0].answerD} />
+            <Button newStyles={styles.answerButton} title={props.answers[0].content} onPress={props.onPress(() => props.answers[0].isCorrect)}/>
+            <Button newStyles={styles.answerButton} title={props.answers[1].content} onPress={props.onPress(() => props.answers[1].isCorrect)}/>
+            <Button newStyles={styles.answerButton} title={props.answers[2].content} onPress={props.onPress(() => props.answers[2].isCorrect)}/>
+            <Button newStyles={styles.answerButton} title={props.answers[3].content} onPress={props.onPress(() => props.answers[3].isCorrect)}/>
         </View>
     )
 }

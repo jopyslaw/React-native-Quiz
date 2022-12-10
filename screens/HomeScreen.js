@@ -9,9 +9,36 @@ import {
 import data from '../assets/data';
 import Footer from '../components/Footer';
 import TestCard from '../components/TestCard';
+import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 
 export default HomeScreen = () => {
+    const getData = async () => {
+        try {
+          const data = await AsyncStorage.getItem('@showStatute');
+          if(!data) {
+            const data = {
+              showState: true
+            };
+    
+            const jsonData = JSON.stringify(data);
+            await AsyncStorage.setItem('@showStatute', jsonData);
+            navigation.navigate('statute')
+          }
+        } catch (e) {
+          console.log(e);
+        }
+    }
+    
+    useEffect(() => {
+        SplashScreen.hide();
+        getData();
+    })
+    
+
+
     const navigation = useNavigation();
     const navigateResult = () => {
         navigation.navigate('Result');

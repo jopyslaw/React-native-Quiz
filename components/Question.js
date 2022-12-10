@@ -14,7 +14,7 @@ const Question = (props) => {
             <Text style={styles.questionText}>{props.question}</Text>
         </View>
         <View>
-            <Answers answers={props.answers}/>
+            <Answers answers={props.answers} onPress={() => props.onPress}/>
         </View>
     </View>
   )

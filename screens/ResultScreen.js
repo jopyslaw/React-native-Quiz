@@ -1,28 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     StyleSheet,
-    Text
+    Text,
+    FlatList,
+    RefreshControl
 } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import results from '../assets/results';
+import OneResultField from '../components/OneResultField';
 
 const ResultScreen = () => {
-  const headers = ['Nick', 'Point', 'Type', 'Date'];
-  const data = [
-    ['test', '10', 'test1', '01.01.2022'],
-    ['test', '10', 'test1', '01.01.2022'],
-    ['test', '10', 'test1', '01.01.2022'],
-    ['test', '10', 'test1', '01.01.2022'],
-    ['test', '10', 'test1', '01.01.2022'],
-  ]
+  let data = results;
+  
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    data = results;
+    setRefreshing(false);
+  }
+
+  const renderItem = ({item}) => <OneResultField nick={item.nick} score={item.score} type={item.type} date={item.date}/>
+  
+
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>Tabela wyników</Text>
-        <Table style={styles.tableStyle} borderStyle={{borderWidth: 2, borderColor: 'white'}}>
-          <Row style={styles.headStyle} data={headers} textStyle={styles.textStyle} />
-          <Rows style={styles.rowStyle} data={data} textStyle={styles.textStyle}/>
-        </Table>
+        <Text style={styles.title}>Tabela wyników</Text>       
+          <OneResultField nick='Nick' score='Score' type='Type' date='Date'/>
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.nick}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+          />
     </View>
   )
 }
