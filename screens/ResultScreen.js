@@ -27,7 +27,7 @@ const ResultScreen = () => {
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Tabela wyników</Text>       
-          <OneResultField nick='Nick' score='Score' type='Type' date='Date'/>
+          {/*<OneResultField nick='Nick' score='Score' type='Type' date='Date'/>*/}
           <FlatList
             data={data}
             renderItem={renderItem}

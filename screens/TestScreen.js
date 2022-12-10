@@ -13,10 +13,9 @@ const TestScreen = () => {
   const [points, setPoints] = useState(0);
   const route = useRoute()
   const navigation = useNavigation();
-
   const [timerCount, setTimer] = useState(30)
 
-  useEffect(() => {
+  /*useEffect(() => {
     let interval = setInterval(() => {
       setTimer(lastTimerCount => {
         //lastTimerCount <= 1 && clearInterval(interval)
@@ -31,26 +30,36 @@ const TestScreen = () => {
 
     if(questionNumber + 1 <= questions.length)
       return () => clearInterval(interval)
-  }, []);
+  }, []);*/
 
 
   const checkIfTrue = (odp) => {
-    console.log(odp)
     if(odp === true) {
       setPoints(prev => prev += 1);
+      console.log(points)
     }
     nextQuestion();
   }
 
   const nextQuestion = () => {
     if((questionNumber+1) < questions.length) {
-      setQuestionNumber(prev => prev + 1);
+      setQuestionNumber(prev => prev += 1);
       setTimer(30);
     } else {
       navigation.navigate('testEndScreen', {
         points: points
       })
+      clearData();
     }
+  }
+
+  const clearData = () => {
+    setPoints(0);
+    setQuestionNumber(0);
+  }
+
+  const getBtnData = (btnData) => {
+    checkIfTrue(btnData);
   }
 
   const {type} = route.params;
@@ -80,7 +89,7 @@ const TestScreen = () => {
           </View>
         </View>
         <View style={{padding: 10}}>
-          <Question answers={questions[questionNumber].answers} question={questions[questionNumber].question} onPress={() => checkIfTrue}/>
+          <Question answers={questions[questionNumber].answers} question={questions[questionNumber].question} childToParent={getBtnData}/>
         </View>
     </View>
   )

@@ -6,13 +6,16 @@ import {
 import Button from './Button';
 
 const Answers = (props) => {
+    const getAnswer = (answer) => {
+        props.childToParent(answer);
+    }
     
     return (
         <View style={styles.answerContainer}>
-            <Button newStyles={styles.answerButton} title={props.answers[0].content} onPress={props.onPress(() => props.answers[0].isCorrect)}/>
-            <Button newStyles={styles.answerButton} title={props.answers[1].content} onPress={props.onPress(() => props.answers[1].isCorrect)}/>
-            <Button newStyles={styles.answerButton} title={props.answers[2].content} onPress={props.onPress(() => props.answers[2].isCorrect)}/>
-            <Button newStyles={styles.answerButton} title={props.answers[3].content} onPress={props.onPress(() => props.answers[3].isCorrect)}/>
+            <Button newStyles={styles.answerButton} title={props.answers[0].content} onPress={() => getAnswer(props.answers[0].isCorrect)}/>
+            <Button newStyles={styles.answerButton} title={props.answers[1].content} onPress={() => getAnswer(props.answers[1].isCorrect)}/>
+            <Button newStyles={styles.answerButton} title={props.answers[2].content} onPress={() => getAnswer(props.answers[2].isCorrect)}/>
+            <Button newStyles={styles.answerButton} title={props.answers[3].content} onPress={() => getAnswer(props.answers[3].isCorrect)}/>
         </View>
     )
 }

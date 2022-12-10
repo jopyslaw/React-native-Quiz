@@ -8,13 +8,18 @@ import Answers from './Answers';
 
 
 const Question = (props) => {
+    const getClickedData = (data) => {
+        props.childToParent(data);
+    }
+
+
   return (
     <View style={styles.container}>
         <View style={styles.questionContainer}>
             <Text style={styles.questionText}>{props.question}</Text>
         </View>
         <View>
-            <Answers answers={props.answers} onPress={() => props.onPress}/>
+            <Answers answers={props.answers} childToParent={getClickedData}/>
         </View>
     </View>
   )

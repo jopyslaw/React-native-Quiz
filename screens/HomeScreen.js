@@ -22,10 +22,10 @@ export default HomeScreen = () => {
             const data = {
               showState: true
             };
-    
+            console.log('Brak danych')
             const jsonData = JSON.stringify(data);
             await AsyncStorage.setItem('@showStatute', jsonData);
-            navigation.navigate('statute')
+            navigation.navigate('Statute')
           }
         } catch (e) {
           console.log(e);
@@ -35,6 +35,8 @@ export default HomeScreen = () => {
     useEffect(() => {
         SplashScreen.hide();
         getData();
+        console.log('useEffect');
+        //navigation.navigate('Result');
     })
     
 
