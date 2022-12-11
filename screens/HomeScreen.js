@@ -3,18 +3,18 @@ import React from 'react'
 import {
     StyleSheet,
     View,
-    Text,
     ScrollView
 } from 'react-native';
-import data from '../assets/data';
 import Footer from '../components/Footer';
 import TestCard from '../components/TestCard';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 export default HomeScreen = () => {
+    const [tests, setTests] = useState([]);
+
     const getData = async () => {
         try {
           const data = await AsyncStorage.getItem('@showStatute');
@@ -31,13 +31,20 @@ export default HomeScreen = () => {
           console.log(e);
         }
     }
+
+    const getTests = () => {
+        fetch('https://tgryl.pl/quiz/tests')
+        .then((response) => response.json())
+        .then((json) => {
+            setTests(json);
+        })
+    };
     
     useEffect(() => {
         SplashScreen.hide();
         getData();
-        console.log('useEffect');
-        //navigation.navigate('Result');
-    })
+        getTests();
+    }, []);
     
 
 
@@ -48,7 +55,7 @@ export default HomeScreen = () => {
 
 
     const generateData = () => {
-        return data.map((data, index) => <TestCard key={index} title={data.title} description={data.description} tag={data.tag}/>   
+        return tests.map((test) => <TestCard key={test.id} title={test.name} description={test.description} tag={test.tags}/>   
         )
     }
 

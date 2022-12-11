@@ -5,7 +5,6 @@ import {
     Text
 } from 'react-native'
 import Question from '../components/Question'
-import { itQuestions, foodQuestions, historyQuestions, marvelQuestions, dcQuestions } from '../assets/questions'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 const TestScreen = () => {
@@ -14,9 +13,11 @@ const TestScreen = () => {
   const route = useRoute()
   const navigation = useNavigation();
   const [timerCount, setTimer] = useState(30)
+  const [questions, setQuestions] = useState([]);
+  const [ready, setReady] = useState(false);
 
-  /*useEffect(() => {
-    let interval = setInterval(() => {
+  useEffect(() => {
+    /*let interval = setInterval(() => {
       setTimer(lastTimerCount => {
         //lastTimerCount <= 1 && clearInterval(interval)
         if((lastTimerCount-1) === 0) {
@@ -30,24 +31,27 @@ const TestScreen = () => {
 
     if(questionNumber + 1 <= questions.length)
       return () => clearInterval(interval)
-  }, []);*/
+    */
+    getQuestions();
+  }, []);
 
 
   const checkIfTrue = (odp) => {
     if(odp === true) {
       setPoints(prev => prev += 1);
-      console.log(points)
     }
     nextQuestion();
   }
 
   const nextQuestion = () => {
-    if((questionNumber+1) < questions.length) {
+    if((questionNumber+1) < questions.tasks.length) {
       setQuestionNumber(prev => prev += 1);
       setTimer(30);
     } else {
       navigation.navigate('testEndScreen', {
-        points: points
+        points: points,
+        totalPoints: questions.tasks.length,
+        type: questions.name
       })
       clearData();
     }
@@ -62,35 +66,37 @@ const TestScreen = () => {
     checkIfTrue(btnData);
   }
 
-  const {type} = route.params;
-  let questions = [];
+  const getQuestions = async () => {
+    const {id} = route.params;
+    const url = 'https://tgryl.pl/quiz/test/' + id;
+    try {
+      const response = await fetch(url);
+      const json = await response.json();
+      setQuestions(json)
+      setReady(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  if(type === 'IT') {
-    questions = itQuestions;
-  } else if(type === 'Food') {
-    questions = foodQuestions;
-  } else if(type === 'History') {
-    questions = historyQuestions;
-  } else if (type === 'Marvel') {
-    questions = marvelQuestions;
-  } else if (type === 'DC') {
-    questions = dcQuestions;
-  }
 
 
   return (
     <View style={styles.container}>
-        <View style={styles.flexBox}>
-          <View style={styles.oneRow}>
-            <Text>Question {questionNumber+1} of {questions.length}</Text>
-          </View>
-          <View style={styles.oneRow}>
-            <Text>Time: {timerCount} s</Text>
-          </View>
-        </View>
-        <View style={{padding: 10}}>
-          <Question answers={questions[questionNumber].answers} question={questions[questionNumber].question} childToParent={getBtnData}/>
-        </View>
+        {ready &&
+          <>
+            <View style={styles.flexBox}>
+            <View style={styles.oneRow}>
+              <Text>Question {questionNumber + 1} of {questions?.tasks?.length}</Text>
+            </View>
+            <View style={styles.oneRow}>
+              <Text>Time: {questions?.tasks[questionNumber]?.duration} s</Text>
+            </View>
+            </View><View style={{ padding: 10 }}>
+              <Question answers={questions?.tasks[questionNumber]?.answers} question={questions?.tasks[questionNumber]?.question} childToParent={getBtnData} />
+            </View>
+          </>
+        }
     </View>
   )
 }

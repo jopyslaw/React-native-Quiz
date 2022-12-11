@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         alignItems: 'center',
-        fontSize: 20
+        fontSize: 20,
+        fontFamily: 'CaveatBrush-Regular'
     }
 })
 

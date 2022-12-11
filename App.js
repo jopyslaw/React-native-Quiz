@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
 } from 'react-native';
@@ -8,11 +8,9 @@ import ResultScreen from './screens/ResultScreen';
 import TestScreen from './screens/TestScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
-import { LogBox } from 'react-native';
 import TestEndScreen from './screens/TestEndScreen';
 import StatuteScreen from './screens/StatuteScreen';
 
-LogBox.ignoreLogs(['Invalid prop `textStyle` of type `array` supplied to `Cell`, expected `object`.']);
 
 const MainScreenFunction = () => {
   return (
@@ -47,15 +45,27 @@ const EndTestScreenFunction = () => {
 const Drawer = createDrawerNavigator();
 
 const App = () => {
+  const [tests, setTests] = useState([]);
+
+  useEffect(() => {
+    getTests();
+    console.log(tests);
+  }, []);
+
+  const getTests = () => {
+    fetch('https://tgryl.pl/quiz/tests')
+    .then((response) => response.json())
+    .then((json) => {
+      setTests(json);
+    })
+  };
+
+
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName='Home'>{/**/}
         <Drawer.Screen name='Home' component={MainScreenFunction} />
-        <Drawer.Screen name='HistoryTest' component={TestScreenFunction} initialParams={{type: 'History'}}/>
-        <Drawer.Screen name='ITTest' component={TestScreenFunction} initialParams={{type: 'IT'}}/>
-        <Drawer.Screen name='FoodTest' component={TestScreenFunction} initialParams={{type: 'Food'}}/>
-        <Drawer.Screen name='MarvelTest' component={TestScreenFunction} initialParams={{type: 'Marvel'}}/>
-        <Drawer.Screen name='DCTest' component={TestScreenFunction} initialParams={{type: 'DC'}}/>
+        {tests.map((test) => <Drawer.Screen name={test.name} component={TestScreenFunction} initialParams={{id: test.id}} key={test.id}/>)}
         <Drawer.Screen name='Result' component={ResultScreenFunction} />
         <Drawer.Screen name='Statute' component={StatuteScreenFunction} options={{drawerItemStyle: {display: 'none'}}}/>
         <Drawer.Screen name='testEndScreen' component={EndTestScreenFunction} options={{drawerItemStyle: {display: 'none'}}} initialParams={{points: '0'}}/>

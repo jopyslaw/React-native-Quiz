@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
@@ -11,25 +11,50 @@ const TestEndScreen = () => {
     const route = useRoute();
     const navigation = useNavigation();
 
-    const {points} = route.params;
-
     const backToMainScreen = () => {
         navigation.navigate('Home');
     }
 
+    const {points, totalPoints, type} = route.params;
+
+    const sendData = () => {
+        console.log(points, totalPoints, type);
+        try{
+        fetch('https://tgryl.pl/quiz/results/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nick: 'Test',
+                points: points,
+                total: totalPoints,
+                type: type
+            })
+        })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        sendData();
+    })
+
     return (
         <View style={styles.container}>
             <View style={styles.resultsContainer}>
-                <Text>
+                <Text style={styles.titleStyle}>
                     Gratulacja udało Ci się rozwiązać Quiz
                 </Text>
-                <Text>
+                <Text style={styles.otherDataStyle}>
                     Liczba punktów którą udało ci się uzyskać to:
                 </Text>
-                <Text>
+                <Text style={styles.pointsStyle}>
                     {points}
                 </Text>
-                <Text>
+                <Text style={styles.otherDataStyle}>
                     Wielkie gratulacje
                 </Text>
                 <TouchableOpacity onPress={backToMainScreen} style={styles.button}>
@@ -63,6 +88,21 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#13d3e8',
         marginTop: 25
+    },
+    titleStyle: {
+        fontFamily: 'CaveatBrush-Regular',
+        fontSize: 35,
+        textAlign: 'center'
+    },
+    otherDataStyle: {
+        marginTop: 20,
+        fontFamily: 'CaveatBrush-Regular',
+        fontSize: 20
+    },
+    pointsStyle: {
+        marginTop: 20,
+        fontFamily: 'CaveatBrush-Regular',
+        fontSize: 50
     }
 })
 

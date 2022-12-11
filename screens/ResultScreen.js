@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
@@ -10,13 +10,26 @@ import results from '../assets/results';
 import OneResultField from '../components/OneResultField';
 
 const ResultScreen = () => {
-  let data = results;
+  const [data, setData] = useState([]);
   
   const [refreshing, setRefreshing] = useState(false);
 
+  useEffect(() => {
+    fetchData();
+    console.log(data);
+  }, []);
+
+  const fetchData = () => {
+    fetch('https://tgryl.pl/quiz/results')
+    .then((response) => response.json())
+    .then((json) => {
+      setData(json);
+    })
+  }
+
   const onRefresh = () => {
     setRefreshing(true);
-    data = results;
+    fetchData()
     setRefreshing(false);
   }
 
@@ -31,7 +44,7 @@ const ResultScreen = () => {
           <FlatList
             data={data}
             renderItem={renderItem}
-            keyExtractor={item => item.nick}
+            keyExtractor={item => item.id}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
           />
     </View>

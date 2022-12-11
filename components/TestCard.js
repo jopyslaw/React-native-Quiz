@@ -17,7 +17,7 @@ const TestCard = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        
+        fontFamily: 'BarlowCondensed-Light',
         borderRadius: 20,
         backgroundColor: 'white',
         padding: 10,
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     title: {
+      fontFamily: 'CaveatBrush-Regular',
       textAlign: 'center',
       fontSize: 20
     },
@@ -36,7 +37,9 @@ const styles = StyleSheet.create({
     },
     description: {
       marginTop: 10,
-      marginBottom: 10
+      marginBottom: 10,
+      fontFamily: 'BarlowCondensed-Light',
+      fontSize: 20
     }
 })
 
