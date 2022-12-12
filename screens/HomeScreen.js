@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react'
 import {
     StyleSheet,
@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 
 export default HomeScreen = () => {
     const [tests, setTests] = useState([]);
+    const route = useRoute();
+    const {testsData} = route.params;
 
     const getData = async () => {
         try {
@@ -31,19 +33,11 @@ export default HomeScreen = () => {
           console.log(e);
         }
     }
-
-    const getTests = () => {
-        fetch('https://tgryl.pl/quiz/tests')
-        .then((response) => response.json())
-        .then((json) => {
-            setTests(json);
-        })
-    };
     
     useEffect(() => {
         SplashScreen.hide();
         getData();
-        getTests();
+        setTests(testsData);
     }, []);
     
 

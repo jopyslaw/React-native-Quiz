@@ -5,6 +5,7 @@ import {
     Text
 } from 'react-native';
 import Answers from './Answers';
+import { shuffle } from 'lodash';
 
 
 const Question = (props) => {
@@ -19,7 +20,7 @@ const Question = (props) => {
             <Text style={styles.questionText}>{props.question}</Text>
         </View>
         <View>
-            <Answers answers={props.answers} childToParent={getClickedData}/>
+            <Answers answers={shuffle(props.answers)} childToParent={getClickedData}/>
         </View>
     </View>
   )

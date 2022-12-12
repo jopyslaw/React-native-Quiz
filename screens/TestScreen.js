@@ -6,6 +6,7 @@ import {
 } from 'react-native'
 import Question from '../components/Question'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { shuffle } from 'lodash'
 
 const TestScreen = () => {
   const [questionNumber, setQuestionNumber] = useState(0);
@@ -33,7 +34,7 @@ const TestScreen = () => {
       return () => clearInterval(interval)
     */
     getQuestions();
-  }, []);
+  }, [setQuestions]);
 
 
   const checkIfTrue = (odp) => {
@@ -69,21 +70,19 @@ const TestScreen = () => {
   const getQuestions = async () => {
     const {id} = route.params;
     const url = 'https://tgryl.pl/quiz/test/' + id;
-    try {
-      const response = await fetch(url);
-      const json = await response.json();
-      setQuestions(json)
+    fetch(url)
+    .then((response) => response.json())
+    .then((json) => {
+      setQuestions(json);
       setReady(true);
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
 
 
 
   return (
     <View style={styles.container}>
-        {ready &&
+          {ready &&
           <>
             <View style={styles.flexBox}>
             <View style={styles.oneRow}>
@@ -96,7 +95,7 @@ const TestScreen = () => {
               <Question answers={questions?.tasks[questionNumber]?.answers} question={questions?.tasks[questionNumber]?.question} childToParent={getBtnData} />
             </View>
           </>
-        }
+          }
     </View>
   )
 }
