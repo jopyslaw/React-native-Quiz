@@ -12,10 +12,7 @@ const Answers = (props) => {
     
     return (
         <View style={styles.answerContainer}>
-            <Button newStyles={styles.answerButton} title={props.answers[0].content} onPress={() => getAnswer(props.answers[0].isCorrect)}/>
-            <Button newStyles={styles.answerButton} title={props.answers[1].content} onPress={() => getAnswer(props.answers[1].isCorrect)}/>
-            <Button newStyles={styles.answerButton} title={props.answers[2].content} onPress={() => getAnswer(props.answers[2].isCorrect)}/>
-            <Button newStyles={styles.answerButton} title={props.answers[3].content} onPress={() => getAnswer(props.answers[3].isCorrect)}/>
+            {props.answers.map((answer, index) => <Button newStyles={styles.answerButton} title={answer.content} onPress={() => getAnswer(answer.isCorrect)} key={index}/>)}
         </View>
     )
 }

@@ -19,7 +19,7 @@ const TestEndScreen = () => {
 
     const sendData = () => {
         console.log(points, totalPoints, type);
-        try{
+        
         fetch('https://tgryl.pl/quiz/results/', {
             method: 'POST',
             headers: {
@@ -33,9 +33,13 @@ const TestEndScreen = () => {
                 type: type
             })
         })
-        } catch (error) {
-            console.log(error);
-        }
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Sucess', data);
+        })
+        .catch((error) => {
+            console.error('Error', error);
+        })
     }
 
     useEffect(() => {
