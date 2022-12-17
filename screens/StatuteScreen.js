@@ -1,12 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react'
-import {
-    View,
-    Text,
-    StyleSheet
-} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {withSafeAreaInsets} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 
 const StatuteScreen = () => {
@@ -14,39 +10,44 @@ const StatuteScreen = () => {
 
   const navigateToHomeScreen = () => {
     naviagtion.navigate('Home');
-  }
+  };
 
   return (
     <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.title}>Regulamin</Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique volutpat pharetra. 
-            Etiam blandit risus ac pretium elementum. Nullam efficitur consequat cursus. 
-            Pellentesque lobortis lorem at felis pharetra dignissim. Vivamus quis massa ac tellus 
-            tincidunt malesuada in ac velit. Vivamus vel lorem blandit, convallis sapien sed, varius enim. 
-            Mauris eget enim at arcu ornare feugiat nec non nisl. Donec luctus, eros quis efficitur tincidunt, 
-            dolor purus dictum ex, vitae tristique tortor tellus id leo. 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique volutpat pharetra. 
-            Etiam blandit risus ac pretium elementum. Nullam efficitur consequat cursus. 
-            Pellentesque lobortis lorem at felis pharetra dignissim. Vivamus quis massa ac tellus 
-            tincidunt malesuada in ac velit. Vivamus vel lorem blandit, convallis sapien sed, varius enim. 
-            Mauris eget enim at arcu ornare feugiat nec non nisl. Donec luctus, eros quis efficitur tincidunt, 
-            dolor purus dictum ex, vitae tristique tortor tellus id leo. 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique volutpat pharetra. 
-            Etiam blandit risus ac pretium elementum. Nullam efficitur consequat cursus. 
-            Pellentesque lobortis lorem at felis pharetra dignissim. Vivamus quis massa ac tellus 
-            tincidunt malesuada in ac velit. Vivamus vel lorem blandit, convallis sapien sed, varius enim. 
-            Mauris eget enim at arcu ornare feugiat nec non nisl. Donec luctus, eros quis efficitur tincidunt, 
-            dolor purus dictum ex, vitae tristique tortor tellus id leo. 
-          </Text>
-          <TouchableOpacity style={styles.btn} onPress={navigateToHomeScreen}>
-            <Text style={styles.btnText}>Zaakceptuj regulamin</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>Regulamin</Text>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+          tristique volutpat pharetra. Etiam blandit risus ac pretium elementum.
+          Nullam efficitur consequat cursus. Pellentesque lobortis lorem at
+          felis pharetra dignissim. Vivamus quis massa ac tellus tincidunt
+          malesuada in ac velit. Vivamus vel lorem blandit, convallis sapien
+          sed, varius enim. Mauris eget enim at arcu ornare feugiat nec non
+          nisl. Donec luctus, eros quis efficitur tincidunt, dolor purus dictum
+          ex, vitae tristique tortor tellus id leo. Lorem ipsum dolor sit amet,
+          consectetur adipiscing elit. Etiam tristique volutpat pharetra. Etiam
+          blandit risus ac pretium elementum. Nullam efficitur consequat cursus.
+          Pellentesque lobortis lorem at felis pharetra dignissim. Vivamus quis
+          massa ac tellus tincidunt malesuada in ac velit. Vivamus vel lorem
+          blandit, convallis sapien sed, varius enim. Mauris eget enim at arcu
+          ornare feugiat nec non nisl. Donec luctus, eros quis efficitur
+          tincidunt, dolor purus dictum ex, vitae tristique tortor tellus id
+          leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+          tristique volutpat pharetra. Etiam blandit risus ac pretium elementum.
+          Nullam efficitur consequat cursus. Pellentesque lobortis lorem at
+          felis pharetra dignissim. Vivamus quis massa ac tellus tincidunt
+          malesuada in ac velit. Vivamus vel lorem blandit, convallis sapien
+          sed, varius enim. Mauris eget enim at arcu ornare feugiat nec non
+          nisl. Donec luctus, eros quis efficitur tincidunt, dolor purus dictum
+          ex, vitae tristique tortor tellus id leo.
+        </Text>
+        <TouchableOpacity style={styles.btn} onPress={navigateToHomeScreen}>
+          <Text style={styles.btnText}>Zaakceptuj regulamin</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -56,7 +57,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#13d3e8',
     flexDirection: 'column',
     alignItems: 'center',
-    
   },
   infoContainer: {
     height: '90%',
@@ -64,13 +64,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     margin: 10,
     padding: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 15
+    marginBottom: 15,
   },
   btn: {
     borderRadius: 20,
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
   },
   btnText: {
     textAlign: 'center',
-    color: 'white'
-  }
-})
+    color: 'white',
+  },
+});
 
-export default StatuteScreen
+export default StatuteScreen;

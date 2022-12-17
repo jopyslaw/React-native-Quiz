@@ -16,27 +16,9 @@ export default HomeScreen = () => {
     const [tests, setTests] = useState([]);
     const route = useRoute();
     const {testsData} = route.params;
-
-    const getData = async () => {
-        try {
-          const data = await AsyncStorage.getItem('@showStatute');
-          if(!data) {
-            const data = {
-              showState: true
-            };
-            console.log('Brak danych')
-            const jsonData = JSON.stringify(data);
-            await AsyncStorage.setItem('@showStatute', jsonData);
-            navigation.navigate('Statute')
-          }
-        } catch (e) {
-          console.log(e);
-        }
-    }
     
     useEffect(() => {
         SplashScreen.hide();
-        getData();
         setTests(testsData);
     }, []);
     
