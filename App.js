@@ -19,7 +19,7 @@ import {
   testTable,
   questionTable,
   createTable,
-  saveTests,
+  saveTestsToDB,
   getTestsDB,
   saveQuestions,
   deleteTable,
@@ -60,24 +60,25 @@ const App = () => {
   };
 
   useEffect(() => {
-    getNetworkState();
+    const removeNetInfoSubscription = NetInfo.addEventListener(state => {
+      const offline = state.isConnected && state.isInternetReachable;
+      setNetState(offline);
+    });
     if (netState) {
       deleteTables();
       createTables();
-      console.log('work');
       getTests();
       //setTestWasGet(false);
       getData();
-      saveQuestionsAndTests();
+      saveTests();
     } else {
-      console.log('not work');
       getTestsFromDb();
-      setTestWasGet(false);
+      //setTestWasGet(false);
     }
-  }, []);
+    return () => removeNetInfoSubscription();
+  }, [netState]);
 
   const getTests = () => {
-    setTestWasGet(prev => !prev);
     fetch('https://tgryl.pl/quiz/tests')
       .then(response => response.json())
       .then(json => {
@@ -101,11 +102,17 @@ const App = () => {
     await createTable(dbConn, 'questions', questionTable);
   };
 
-  const saveQuestionsAndTests = async () => {
+  const saveTests = async () => {
     const response = await fetch('https://tgryl.pl/quiz/tests');
     const tests = await response.json();
     const dbConn = await getDBConnection();
-    await saveTests(dbConn, tests);
+    await saveTestsToDB(dbConn, tests);
+    saveQuestionsToDB();
+  };
+
+  const saveQuestionsToDB = () => {
+    console.log('i am alive');
+    const dbConn = getDBConnection();
     tests.forEach(async test => {
       const id = test.id;
       const questions = getTest(id);
@@ -135,6 +142,7 @@ const App = () => {
     const db = await getDBConnection();
     const storedTests = await getTestsDB(db);
     setTests(storedTests);
+    console.log(storedTests);
     setTestWasGet(true);
   });
 
@@ -147,13 +155,6 @@ const App = () => {
   const randomTest = () => {
     const randomTest = tests[Math.floor(Math.random() * tests.length)];
     navigate(randomTest.name);
-  };
-
-  const getNetworkState = async () => {
-    const data = await NetInfo.fetch();
-    const state = await data.isConnected;
-    console.log(state);
-    setNetState(state);
   };
 
   return (
@@ -200,24 +201,5 @@ const App = () => {
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

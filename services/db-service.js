@@ -8,7 +8,11 @@ export const questionTable =
 enablePromise(true);
 
 export const getDBConnection = () => {
-  return openDatabase({name: 'Quiz'});
+  return openDatabase(
+    {name: 'quiz.db', createFromLocation: 'quiz.db'},
+    () => console.log('sucess'),
+    e => console.log('error', e),
+  );
 };
 
 export const createTable = async (db, tableName, columns) => {
@@ -41,7 +45,7 @@ export const getTestsDB = async db => {
   }
 };
 
-export const getQuestions = async (db, id) => {
+export const getDBQuestions = async (db, id) => {
   try {
     const questions = [];
     const sql = `SELECT * FROM questions WHERE id = ${id}`;
@@ -57,7 +61,7 @@ export const getQuestions = async (db, id) => {
   }
 };
 
-export const saveTests = async (db, tests) => {
+export const saveTestsToDB = async (db, tests) => {
   const insertQuery =
     `INSERT INTO tests VALUES ` +
     tests

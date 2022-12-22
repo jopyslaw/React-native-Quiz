@@ -3,6 +3,8 @@ import {View, StyleSheet, Text} from 'react-native';
 import Question from '../components/Question';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {shuffle} from 'lodash';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {getDBConnection, getDBQuestions} from '../services/db-service';
 
 const TestScreen = () => {
   const [questionNumber, setQuestionNumber] = useState(0);
@@ -12,6 +14,7 @@ const TestScreen = () => {
   const [timerCount, setTimer] = useState(30);
   const [questions, setQuestions] = useState([]);
   const [ready, setReady] = useState(false);
+  const netState = useNetInfo();
 
   useEffect(() => {
     /*let interval = setInterval(() => {
@@ -30,7 +33,7 @@ const TestScreen = () => {
       return () => clearInterval(interval)
     */
     getQuestions();
-  }, [setQuestions]);
+  }, []);
 
   const checkIfTrue = odp => {
     if (odp === true) {
@@ -63,14 +66,24 @@ const TestScreen = () => {
   };
 
   const getQuestions = async () => {
+    //if (netState.isConnected) {
     const {id} = route.params;
     const url = 'https://tgryl.pl/quiz/test/' + id;
     fetch(url)
       .then(response => response.json())
       .then(json => {
         setQuestions(json);
+        setTimeout(() => console.log(), 20000);
         setReady(true);
       });
+    /*} else {
+      const {id} = route.params;
+      console.log(id);
+      const db = getDBConnection();
+      const storedQuestions = await getDBQuestions(db, id);
+      setQuestions(storedQuestions);
+      setReady(true);
+    }*/
   };
 
   return (
