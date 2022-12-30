@@ -87,36 +87,42 @@ const App = () => {
       });
   };
 
-  const getTest = id => {
-    const url = 'https://tgryl.pl/quiz/test/' + id;
-    fetch(url)
-      .then(response => response.json())
-      .then(json => {
-        return json;
-      });
+  const getTest = async id => {
+    const url = `https://tgryl.pl/quiz/test/${id}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
   };
 
   const createTables = async () => {
     const dbConn = await getDBConnection();
-    await createTable(dbConn, 'tests', testTable);
-    await createTable(dbConn, 'questions', questionTable);
+    await Promise.all(
+      createTable(dbConn, 'tests', testTable),
+      createTable(dbConn, 'questions', questionTable),
+    );
   };
 
   const saveTests = async () => {
     const response = await fetch('https://tgryl.pl/quiz/tests');
     const tests = await response.json();
     const dbConn = await getDBConnection();
-    await saveTestsToDB(dbConn, tests);
-    saveQuestionsToDB();
-  };
-
-  const saveQuestionsToDB = () => {
-    console.log('i am alive');
-    const dbConn = getDBConnection();
     tests.forEach(async test => {
       const id = test.id;
+      //console.log('id', id);
+      const questions = await getTest(id);
+      //console.log(questions);
+      await saveQuestions(dbConn, questions);
+    });
+    await saveTestsToDB(dbConn, tests);
+  };
+
+  const saveQuestionsToDB = async () => {
+    //console.log('i am alive');
+    const dbConn = getDBConnection();
+    await tests.forEach(async test => {
+      const id = test.id;
       const questions = getTest(id);
-      console.log(questions);
+      //console.log(questions);
       await saveQuestions(dbConn, questions);
     });
   };
@@ -142,14 +148,15 @@ const App = () => {
     const db = await getDBConnection();
     const storedTests = await getTestsDB(db);
     setTests(storedTests);
-    console.log(storedTests);
     setTestWasGet(true);
   });
 
   const deleteTables = async () => {
     const dbConn = await getDBConnection();
-    await deleteTable(dbConn, 'tests');
-    await deleteTable(dbConn, 'questions');
+    await Promise.all(
+      deleteTable(dbConn, 'tests'),
+      deleteTable(dbConn, 'questions'),
+    );
   };
 
   const randomTest = () => {

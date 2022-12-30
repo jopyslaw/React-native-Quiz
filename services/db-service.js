@@ -3,13 +3,13 @@ import {enablePromise, openDatabase} from 'react-native-sqlite-storage';
 export const testTable =
   'id text PRIMARY KEY, name text, description text, tags text, level text, numberOfTasks number';
 export const questionTable =
-  'question_id number PRIMARY KEY AUTOINCREMENT, id text, question text, answer_a text, answer_b text, answer_c text, answer_d text, correct_answer string, duration number';
+  'question_id INTEGER PRIMARY KEY AUTOINCREMENT, id text, question text, answer_a text, answer_b text, answer_c text, answer_d text, correct_answer string, duration number';
 
 enablePromise(true);
 
 export const getDBConnection = () => {
   return openDatabase(
-    {name: 'quiz.db', createFromLocation: 'quiz.db'},
+    {name: 'quiz.db'},
     () => console.log('sucess'),
     e => console.log('error', e),
   );
@@ -17,11 +17,12 @@ export const getDBConnection = () => {
 
 export const createTable = async (db, tableName, columns) => {
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(${columns});`;
+  console.log(query);
   await db.executeSql(
     query,
     [],
     () => {
-      console.log('success on creating tables');
+      console.log('success on creating tables', tableName);
     },
     error => {
       console.log('error', error);
@@ -48,16 +49,17 @@ export const getTestsDB = async db => {
 export const getDBQuestions = async (db, id) => {
   try {
     const questions = [];
-    const sql = `SELECT * FROM questions WHERE id = ${id}`;
+    const sql = `SELECT * FROM questions WHERE id = "${id}"`;
     const result = await db.executeSql(sql);
     result.forEach(question => {
-      for (let i = 0; i < test.rows.length; i++) {
+      for (let i = 0; i < question.rows.length; i++) {
         questions.push(question.rows.item(i));
       }
     });
     return questions;
   } catch (error) {
-    throw new Error('Can not get questions from db');
+    console.log(error);
+    throw new Error('Can not get questions from db' + error);
   }
 };
 
@@ -84,25 +86,36 @@ export const saveTestsToDB = async (db, tests) => {
 };
 
 export const saveQuestions = async (db, questions) => {
-  const insertQuery =
-    `INSERT INTO questions VALUES` +
-    `(NULL, ${questions.id} ` +
+  const insertQ =
+    'INSERT INTO questions VALUES ' +
     questions.tasks.map(
-      question => `${question.question}, 
-                                    ${question.answers[0].content ?? null}, 
-                                    ${question.answers[1].content ?? null}, 
-                                    ${question.answers[2].content ?? null},
-                                    ${question.answers[3].content ?? null},
-                                    ${
-                                      question.answers.filter(
-                                        data => data.isCorrect === true,
-                                      ).content
-                                    },
-                                    ${question.duration} )`,
+      (question, index) =>
+        `(NULL, "${questions.id}", "${question.question}", "${
+          question.answers[0].content ?? undefined
+        }", "${question.answers[1].content ?? undefined}","${
+          question.answers[2].content ?? undefined
+        }","${
+          typeof question.answers[3] === 'undefined'
+            ? null
+            : question.answers[3].content
+        }", "${getGoodAnswer(question.answers)}", "${question.duration}") `,
     );
-  console.log(insertQuery);
+
+  /*const insertQuery =
+    `INSERT INTO questions VALUES` +
+    `(NULL, "${questions.id}" ,` +
+    questions.tasks.map(
+      question => `"${question.question}", 
+                                    "${question.answers[0].content ?? null}", 
+                                    "${question.answers[1].content ?? null}", 
+                                    "${question.answers[2].content ?? null}",
+                                    "${question.answers[3].content ?? null}",
+                                    "${getGoodAnswer(question.answers)}",
+                                    "${question.duration}" )`,
+    );*/
+  console.log(insertQ);
   return db.executeSql(
-    insertQuery,
+    insertQ,
     [],
     () => {
       console.log('succes on adding data');
@@ -111,6 +124,12 @@ export const saveQuestions = async (db, questions) => {
       console.log('error while addding data', error);
     },
   );
+};
+
+const getGoodAnswer = answers => {
+  const data = answers.filter(data => data.isCorrect);
+  console.log(data[0].content);
+  return data[0].content;
 };
 
 export const deleteTable = async (db, table) => {

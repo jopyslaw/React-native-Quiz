@@ -66,24 +66,52 @@ const TestScreen = () => {
   };
 
   const getQuestions = async () => {
-    //if (netState.isConnected) {
-    const {id} = route.params;
-    const url = 'https://tgryl.pl/quiz/test/' + id;
-    fetch(url)
-      .then(response => response.json())
-      .then(json => {
-        setQuestions(json);
-        setTimeout(() => console.log(), 20000);
-        setReady(true);
-      });
-    /*} else {
+    if (netState.isConnected) {
+      const {id} = route.params;
+      const url = 'https://tgryl.pl/quiz/test/' + id;
+      fetch(url)
+        .then(response => response.json())
+        .then(json => {
+          setQuestions(json);
+          setTimeout(() => console.log(), 20000);
+          setReady(true);
+        });
+    } else {
       const {id} = route.params;
       console.log(id);
-      const db = getDBConnection();
+      const db = await getDBConnection();
       const storedQuestions = await getDBQuestions(db, id);
-      setQuestions(storedQuestions);
+      console.log(storedQuestions);
+      setQuestions(translateDBdatatoJSONObject(storedQuestions));
       setReady(true);
-    }*/
+    }
+  };
+
+  const translateDBdatatoJSONObject = questions => {
+    const q = questions.map(question => {
+      const allAnswers = [
+        question.answer_a,
+        question.answer_b,
+        question.answer_c,
+        question.answer_d,
+      ];
+      return {
+        question: question.question,
+        duration: question.duration,
+        answers: allAnswers.map(answer => {
+          if (answer !== 'null') {
+            return {
+              content: answer,
+              isCorrect: question.correct_answer === answer ? true : false,
+            };
+          }
+        }),
+      };
+    });
+    const data = {
+      tasks: q,
+    };
+    return data;
   };
 
   return (
