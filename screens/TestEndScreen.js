@@ -14,8 +14,6 @@ const TestEndScreen = () => {
   const {points, totalPoints, type} = route.params;
 
   const sendData = async () => {
-    console.log(points, totalPoints, type);
-
     await fetch('http://tgryl.pl/quiz/result', {
       method: 'POST',
       headers: {

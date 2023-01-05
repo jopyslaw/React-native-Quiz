@@ -69,19 +69,13 @@ const TestScreen = () => {
     if (netState.isConnected) {
       const {id} = route.params;
       const url = 'https://tgryl.pl/quiz/test/' + id;
-      fetch(url)
-        .then(response => response.json())
-        .then(json => {
-          setQuestions(json);
-          setTimeout(() => console.log(), 20000);
-          setReady(true);
-        });
+      const response = await fetch(url);
+      const json = await response.json();
+      setQuestions(json);
     } else {
       const {id} = route.params;
-      console.log(id);
       const db = await getDBConnection();
       const storedQuestions = await getDBQuestions(db, id);
-      console.log(storedQuestions);
       setQuestions(translateDBdatatoJSONObject(storedQuestions));
       setReady(true);
     }
@@ -98,14 +92,16 @@ const TestScreen = () => {
       return {
         question: question.question,
         duration: question.duration,
-        answers: allAnswers.map(answer => {
-          if (answer !== 'null') {
-            return {
-              content: answer,
-              isCorrect: question.correct_answer === answer ? true : false,
-            };
-          }
-        }),
+        answers: allAnswers
+          .map(answer => {
+            if (answer !== 'null') {
+              return {
+                content: answer,
+                isCorrect: question.correct_answer === answer ? true : false,
+              };
+            }
+          })
+          .filter(data => typeof data !== 'undefined'),
       };
     });
     const data = {

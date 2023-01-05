@@ -17,7 +17,6 @@ export const getDBConnection = () => {
 
 export const createTable = async (db, tableName, columns) => {
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(${columns});`;
-  console.log(query);
   await db.executeSql(
     query,
     [],
@@ -58,7 +57,6 @@ export const getDBQuestions = async (db, id) => {
     });
     return questions;
   } catch (error) {
-    console.log(error);
     throw new Error('Can not get questions from db' + error);
   }
 };
@@ -100,20 +98,6 @@ export const saveQuestions = async (db, questions) => {
             : question.answers[3].content
         }", "${getGoodAnswer(question.answers)}", "${question.duration}") `,
     );
-
-  /*const insertQuery =
-    `INSERT INTO questions VALUES` +
-    `(NULL, "${questions.id}" ,` +
-    questions.tasks.map(
-      question => `"${question.question}", 
-                                    "${question.answers[0].content ?? null}", 
-                                    "${question.answers[1].content ?? null}", 
-                                    "${question.answers[2].content ?? null}",
-                                    "${question.answers[3].content ?? null}",
-                                    "${getGoodAnswer(question.answers)}",
-                                    "${question.duration}" )`,
-    );*/
-  console.log(insertQ);
   return db.executeSql(
     insertQ,
     [],
@@ -128,7 +112,6 @@ export const saveQuestions = async (db, questions) => {
 
 const getGoodAnswer = answers => {
   const data = answers.filter(data => data.isCorrect);
-  console.log(data[0].content);
   return data[0].content;
 };
 

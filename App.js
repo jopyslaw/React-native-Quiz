@@ -68,12 +68,9 @@ const App = () => {
       deleteTables();
       createTables();
       getTests();
-      //setTestWasGet(false);
-      getData();
       saveTests();
     } else {
       getTestsFromDb();
-      //setTestWasGet(false);
     }
     return () => removeNetInfoSubscription();
   }, [netState]);
@@ -108,40 +105,10 @@ const App = () => {
     const dbConn = await getDBConnection();
     tests.forEach(async test => {
       const id = test.id;
-      //console.log('id', id);
       const questions = await getTest(id);
-      //console.log(questions);
       await saveQuestions(dbConn, questions);
     });
     await saveTestsToDB(dbConn, tests);
-  };
-
-  const saveQuestionsToDB = async () => {
-    //console.log('i am alive');
-    const dbConn = getDBConnection();
-    await tests.forEach(async test => {
-      const id = test.id;
-      const questions = getTest(id);
-      //console.log(questions);
-      await saveQuestions(dbConn, questions);
-    });
-  };
-
-  const getData = async () => {
-    try {
-      const data = await AsyncStorage.getItem('@showStatute');
-      if (!data) {
-        const data = {
-          showState: true,
-        };
-        console.log('Brak danych');
-        const jsonData = JSON.stringify(data);
-        await AsyncStorage.setItem('@showStatute', jsonData);
-        navigate('Statute');
-      }
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   const getTestsFromDb = useCallback(async () => {
@@ -168,7 +135,7 @@ const App = () => {
     <NavigationContainer ref={navigationRef}>
       {testWasGet && (
         <Drawer.Navigator
-          initialRouteName="Home"
+          initialRouteName="Statute"
           drawerContent={props => {
             return (
               <DrawerContentScrollView {...props}>

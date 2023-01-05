@@ -3,22 +3,18 @@ import React from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import Footer from '../components/Footer';
 import TestCard from '../components/TestCard';
-import SplashScreen from 'react-native-splash-screen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useState} from 'react';
 
 export default HomeScreen = () => {
   const [tests, setTests] = useState([]);
   const route = useRoute();
   const {testsData} = route.params;
+  const navigation = useNavigation();
 
   useEffect(() => {
-    SplashScreen.hide();
     setTests(testsData);
-    console.log(testsData);
   }, []);
 
-  const navigation = useNavigation();
   const navigateResult = () => {
     navigation.navigate('Result');
   };

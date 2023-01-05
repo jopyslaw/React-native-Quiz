@@ -2,14 +2,36 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {withSafeAreaInsets} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StatuteScreen = () => {
   const naviagtion = useNavigation();
 
   const navigateToHomeScreen = () => {
     naviagtion.navigate('Home');
+  };
+
+  useEffect(() => {
+    SplashScreen.hide();
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const data = await AsyncStorage.getItem('@showStatute');
+      if (!data) {
+        const data = {
+          showState: true,
+        };
+        const jsonData = JSON.stringify(data);
+        await AsyncStorage.setItem('@showStatute', jsonData);
+      } else {
+        naviagtion.navigate('Home');
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
